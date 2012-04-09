@@ -1,0 +1,62 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<script src='./xregexp.js'></script>
+<script src='./dateutil.js'></script>
+<script src='./render.js' language="javascript"></script>
+<script language='javascript'>
+function init(){
+  var t0 = new Date()
+  var template=document.getElementById('template');
+  var data=document.getElementById('data');
+  var viewport=document.getElementById('viewport');
+  var out = template.value.render(data.value)
+  viewport.innerHTML = out;
+  var elapsed = new Date - t0;
+  alert(elapsed/1000)
+  
+}
+</script>
+<meta content="text/html; charset=UTF-8" http-equiv="content-type" /><title>render</title>
+</head>
+<body>
+<!--form method="get" action="." name="renderer"-->
+<table><tr><th>template</th><th>data</th></tr>
+<td><textarea name="template" id="template" cols='100' rows='6'>
+<!-- starting template -->
+<p>Il y a {{headers|length}} paragraphes</p>
+<p>{{ header.display }}</p>
+{% for header in headers|dictsort:"level" %}
+{% if header.style %}<p style="{{ header.style }}">{% endif %}{{ forloop.counter0 }} {{ header.text }}{% if header.style %}</p>{% endif %}{% endfor %}
+<table >
+<thead><tr>
+<td>id</td><td>date</td><td>format</td><td>produce</td><td>dow</td><td>doy</td><td>woy</td><td>année</td>
+</tr></thead>
+<tbody>
+{% for date in dates|dictsort:"val" %}<tr>
+<td>#{{ forloop.counter }}</td><td>{{ date.val|date:d/M/Y|ljust:10 }}</td><td>{{ date.format|ljust:12}}</td><td>{{ date.val|date:date.format|ljust:16}}</td><td>dow:{{ date.val|date:F|rjust:1 }}</td><td>doy:{{ date.val|date:z|floatformat:0|rjust:3 }}</td><td>woy:{{ date.val|date:W|rjust:2 }}</td><td>{% if date.val|date:L %}bisextile{% endif %}</td></tr>{% endfor %}</tbody></table>
+<!-- ending template -->
+</textarea></td><td>
+<textarea name="data" id="data" cols='100' rows='6'>
+{headers:[
+  {level:3,text:'1 Titre level 3',display:'block',style:'font-weight:bold;'},
+  {level:1,text:'2 text 14px',style:'font-size:14px;'},
+  {level:5,text:'3 text displayed',sub:'CAPITAL LETTERS'},
+  {level:4,text:'4 text displayed',sub:'sub text', date:Date()},
+  {level:7,text:'5 Titre level 7',style:'font-style:italic;',display:'block'},
+  {level:2,text:'6 text 11px',style:'font-size:11px;',display:'inline',sub:'ceci est un sous-texte'}
+ ],
+ header:{display:'inline'},
+ dates:{
+  newYear:{val:new Date(2011,0,2),format:"Y-M-j"},
+  old:{val:new Date(2011,12,15),format:"j-M-y"},
+  a:{val:new Date(2008,11,31),format:"j-m-y"},
+  first:{val:new Date(2012,02,1),format:"YMD"},
+  now:{val:new Date(),format:"j/m/y h:i:s"},
+  far:{val:new Date(2015,6,15,12,7,35),format:"j m y h i s"},
+ }
+}</textarea></td></tr></table>
+<button onclick='javascript:void(init())' value='render'>render</button>
+<!--/form-->
+<!--<textarea name="viexport" id="viewport" cols='200' rows='10'></textarea>-->
+<div name="viexport" id="viewport"></div>
+</body></html>
