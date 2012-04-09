@@ -1,0 +1,9 @@
+String.render is a javascript library that contains an extention to the
+String.prototype. This extention allows you to render a string against
+complex data structures.
+The string, as template, is writtent in a Django-like style.
+(see https://docs.djangoproject.com/en/dev/ref/templates/ )
+
+The code is released under the Gnu Public licence version 3.
+(see http://www.gnu.org/licenses/gpl.html )
+
