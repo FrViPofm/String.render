@@ -15,7 +15,6 @@ XRegExp.addToken(
   }
 );
 String.prototype.render = function () {
-  var __version = "0.3.0-dev"
 /*
 * render a django-like template against a context
 * vars are
@@ -226,4 +225,4 @@ String.prototype.render = function () {
     }
   return t;
 };
-String.prototype.render.VERSION = 1.02;
+String.prototype.render.VERSION = 1.03;
